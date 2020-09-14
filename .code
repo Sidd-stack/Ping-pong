@@ -5,7 +5,7 @@ import random
 from random import choice
 
 win = turtle.Screen()
-win.title('Ping Pong by SidBhatta')
+win.title('Ping pong by SidBhatta')
 win.bgcolor('white')
 win.setup(width = 800, height = 600)
 win.tracer(0)
