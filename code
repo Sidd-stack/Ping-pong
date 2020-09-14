@@ -1,0 +1,148 @@
+# Ping pong
+
+import turtle
+import random
+from random import choice
+
+win = turtle.Screen()
+win.title('Ping Pong by SidBhatta')
+win.bgcolor('white')
+win.setup(width = 800, height = 600)
+win.tracer(0)
+
+#LEFT_PADDLE
+
+paddle_l=turtle.Turtle()
+paddle_l.shape('square')
+paddle_l.speed(0)
+paddle_l.color('black')
+paddle_l.shapesize(stretch_wid = 5, stretch_len = 0.1)
+paddle_l.penup()
+paddle_l.goto(-350, -185)
+
+#RIGHT_PADDLE
+
+paddle_r=turtle.Turtle()
+paddle_r.shape('square')
+paddle_r.speed()
+paddle_r.color('black')
+paddle_r.shapesize(stretch_wid = 5, stretch_len = 0.1)
+paddle_r.penup()
+paddle_r.goto(350, 210)
+
+#BALL
+
+ball=turtle.Turtle()
+ball.shape('circle')
+ball.speed(0)
+ball.color('blue')
+ball.shapesize(stretch_wid = 0.5, stretch_len = 0.5)
+ball.penup()
+ball.goto(0, 0)
+ball.dx = 1
+ball.dy = 1
+ballcolors = ['blue', 'black', 'grey', 'purple', 'red', 'yellow', 'green']
+
+#SCORE
+score_a = 0
+score_b = 0
+score_num = 0
+
+#PEN
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color('black')
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.clear()
+pen.write("Player A:0 Score: 0 Player B:0", align = "center", font = ("Courier", 24, "normal"))
+
+
+#FUNCTIONS
+def paddle_l_up():
+    y = paddle_l.ycor()
+    y += 25
+    paddle_l.sety(y)
+def paddle_l_down():
+    y = paddle_l.ycor()
+    y -= 25
+    paddle_l.sety(y)
+def paddle_r_up():
+    y = paddle_r.ycor()
+    y += 25
+    paddle_r.sety(y)
+def paddle_r_down():
+    y = paddle_r.ycor()
+    y -= 25
+    paddle_r.sety(y)
+
+#KEYBINDS
+
+win.listen()
+win.onkeypress(paddle_l_up, 'w')
+win.listen()
+win.onkeypress(paddle_l_down, 's')
+win.listen()
+win.onkeypress(paddle_r_up, 'Up')
+win.listen()
+win.onkeypress(paddle_r_down, 'Down')
+
+#CLOSE
+while True:
+    win.update()
+
+
+
+    #BALL MOVEMENT
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    #COLLIDING BALL WITH ROOF
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+
+    #TOUCHING OUTSIDE
+    if ball.xcor() > 390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+        score_a += 1
+        score_num = 0
+        paddle_l.goto(-350, -190)
+        paddle_r.goto(350, 210)
+        pen.clear()
+        pen.write("Player A:{} Score:{} Player B:{}".format(score_a, score_num ,score_b), align = "center", font=("Courier", 24, "normal"))
+
+    if ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+        score_b += 1
+        score_num = 0
+        paddle_r.goto(350, 210)
+        paddle_l.goto(-350, -190)
+        pen.clear()
+        pen.write("Player A:{} Score:{} Player B:{}".format(score_a, score_num ,score_b), align = "center", font=("Courier", 24, "normal"))
+
+        #COLLOSION BALL WITH THE PADDLES
+
+    if (ball.xcor() > 340 and ball.xcor() < 350 and ball.ycor() < paddle_r.ycor() + 50 and ball.ycor() > paddle_r.ycor() - 50):
+        ball.setx(340)
+        ball.dx *= -1
+        score_num += 1
+        ball.color(random.choice(ballcolors))
+        pen.clear()
+        pen.write("Player A:{}  Score:{}  Player B:{}".format(score_a, score_num, score_b), align = "center", font = ("Courier", 24, "normal"))
+
+
+    if (ball.xcor() < -340 and ball.xcor() > -350 and ball.ycor() < paddle_l.ycor() + 50 and ball.ycor() > paddle_l.ycor() - 50):
+        ball.setx(-340)
+        ball.dx *= -1
+        score_num += 1
+        ball.color(random.choice(ballcolors))
+        pen.clear()
+        pen.write("Player A:{}  Score:{}  Player B:{}".format(score_a, score_num, score_b), align = "center", font = ("Courier", 24, "normal"))
